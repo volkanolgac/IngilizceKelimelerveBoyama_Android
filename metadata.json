@@ -1,0 +1,8 @@
+{
+  "name": "Ingilizce Kelimeler ve Boyama",
+  "description": "Kelimeleri Bil, Çizimleri Boya 100 Kelimeyi Tamamla!",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
