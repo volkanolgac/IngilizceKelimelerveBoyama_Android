@@ -1934,7 +1934,15 @@ const CollectionScreen: React.FC<{
 // 6. MAIN APP COMPONENT
 // ==========================================
 export default function App() {
+  const [showSplash, setShowSplash] = useState<boolean>(true);
   const [currentScreen, setCurrentScreen] = useState<'home' | 'game' | 'collection' | 'studio'>('home');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2800);
+    return () => clearTimeout(timer);
+  }, []);
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
   const [revealedIndices, setRevealedIndices] = useState<number[]>([]);
   const [completedWordIds, setCompletedWordIds] = useState<string[]>(() => {
@@ -2301,6 +2309,62 @@ export default function App() {
   return (
     <div className={`h-[100dvh] max-h-[100dvh] w-full overflow-hidden ${currentTheme.bgGradient} flex flex-col justify-between select-none ${currentTheme.textColor}`}>
       
+      {/* 0. SPLASH SCREEN OVERLAY */}
+      {showSplash && (
+        <div className="fixed inset-0 z-50 bg-gradient-to-b from-amber-300 via-amber-400 to-yellow-500 flex flex-col items-center justify-between p-4 sm:p-6 select-none overflow-hidden">
+          {/* Floating decorative elements */}
+          <div className="absolute top-6 left-6 text-3xl animate-bounce">⭐</div>
+          <div className="absolute top-10 right-8 text-4xl animate-pulse">🎨</div>
+          <div className="absolute bottom-12 left-8 text-3xl animate-bounce">✨</div>
+          <div className="absolute bottom-16 right-10 text-3xl animate-pulse">🌟</div>
+
+          {/* Top Brand Pill */}
+          <div className="pt-2 sm:pt-4 flex items-center gap-2 bg-white/95 backdrop-blur px-5 py-2 rounded-full shadow-lg border-2 border-amber-200">
+            <Sparkles className="w-5 h-5 text-amber-500 animate-spin" />
+            <span className="font-black text-amber-900 text-xs sm:text-sm tracking-wide uppercase">İngilizce Kelimeler & Boyama</span>
+          </div>
+
+          {/* Splash Art Container */}
+          <div className="my-auto flex flex-col items-center text-center max-w-xs sm:max-w-sm w-full">
+            <div className="relative group cursor-pointer" onClick={() => setShowSplash(false)}>
+              <div className="absolute -inset-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl blur-md opacity-80 animate-pulse"></div>
+              <div className="relative w-56 h-72 sm:w-64 sm:h-84 rounded-3xl border-4 border-white shadow-2xl overflow-hidden bg-amber-100">
+                <img 
+                  src="/img_splash_screen.jpg" 
+                  alt="Açılış Görseli" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white font-black text-[11px] sm:text-xs px-4 py-1 rounded-full shadow-lg border-2 border-white whitespace-nowrap uppercase tracking-wider">
+                Çocuklar İçin Özel
+              </div>
+            </div>
+
+            <h1 className="mt-5 text-xl sm:text-2xl font-black text-slate-900 drop-shadow-sm tracking-tight">
+              Açılıyor...
+            </h1>
+            <p className="mt-1 text-xs font-bold text-amber-900 max-w-xs">
+              Eğlenceli kelime ve boyama dünyasına hoş geldiniz!
+            </p>
+
+            <button
+              onClick={() => {
+                sound.playSuccessChime();
+                setShowSplash(false);
+              }}
+              className="mt-4 w-full max-w-xs py-3 px-6 bg-slate-900 hover:bg-slate-800 text-amber-300 font-black text-sm sm:text-base rounded-2xl shadow-xl border-2 border-amber-400 flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+            >
+              <Play className="w-5 h-5 fill-amber-300" /> BAŞLA
+            </button>
+          </div>
+
+          {/* Footer Info */}
+          <div className="pb-2 text-center text-[11px] font-black text-amber-900/90 tracking-wide">
+            100 Kelime • Sesli Telaffuz • Renkli Boyama Stüdyosu
+          </div>
+        </div>
+      )}
+
       {/* 1. HOME SCREEN */}
       {currentScreen === 'home' && (
         <div key="screen-home" className="flex flex-col h-full max-h-[100dvh] max-w-4xl w-full mx-auto px-4 sm:px-6 py-3 sm:py-5 justify-between select-none overflow-hidden text-center">
@@ -2340,8 +2404,12 @@ export default function App() {
           {/* Hero Banner */}
           <div className="my-auto py-2 shrink min-h-0 text-center">
             <div className="relative inline-block mx-auto mb-2">
-              <div className={`w-28 h-28 sm:w-36 sm:h-36 rounded-4xl ${currentTheme.heroBg} shadow-lg flex items-center justify-center border-4 border-white text-6xl sm:text-7xl animate-bounce-short`}>
-                🦁
+              <div className={`w-28 h-28 sm:w-36 sm:h-36 rounded-4xl ${currentTheme.heroBg} shadow-lg flex items-center justify-center border-4 border-white overflow-hidden p-1 sm:p-1.5 animate-bounce-short`}>
+                <img 
+                  src="/img_app_icon.jpg" 
+                  alt="Aslan Maskot" 
+                  className="w-full h-full object-cover rounded-3xl" 
+                />
               </div>
               <div className="absolute -top-2 -right-3 bg-emerald-500 text-white font-black text-[11px] sm:text-xs px-3 py-1 rounded-full shadow-md uppercase">
                 100 Kelime
